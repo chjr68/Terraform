@@ -1,9 +1,13 @@
-# Public Subnet에 부여할 CIDR 목록을 변수bool로 생성
+# 옵션값을 정의하고 블록단위로 인프라 생성
+# 자주사용하는 옵션을 추가할 수 있음
+# 객체를 블록단위로 관리하여 유연하게 인프라 생성
+# 아래 코드는 블록 4개 즉, 리소스 4개 생성
+
 variable "kubernetes" {
-  type = map(object({
-    ips  = string
-    tags = map(string)
-    used_eip = bool
+  type = map(object({ #map type정의하여 key-value형식으로 사용
+    ips  = string #사설IP
+    tags = map(string) #콘솔에 출력되는 이름
+    used_eip = bool #eip 사용 유무 true: 사용, false: 미사용
   }))
   default = {
     "master1" = {
@@ -36,8 +40,3 @@ variable "kubernetes" {
     }
   }
 }
-
-# resource "aws_iam_user" "for_each_set" {
-#   for_each = toset(var.user_names)
-#   name = each.key # each.key == each.value
-# }
