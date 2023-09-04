@@ -13,7 +13,7 @@ Terraform 설치 및 사용 가이드를 기술합니다.
 
 ## 0. 사용목적
 - 여러개의 단순 반복적인 인스턴스 생성을 명령어 한번으로 쉽게 배포 가능
-- 리소스 별 샘플코드를 한번 작성해두면 Terraform을 모르는 사용자도 쉽게 활용 할 수 있음
+- 리소스 별 샘플코드를 작성해두면 Terraform을 모르는 사용자도 쉽게 활용 할 수 있음
 
 ## 1. 사전준비
 - 작업 환경 : Windows / VSCode
@@ -39,14 +39,14 @@ Terraform 설치 및 사용 가이드를 기술합니다.
 - [AWS 계정 연동 방법](https://kimjingo.tistory.com/209) 참고하여 설정
 
 ## 4. 명령어
-- 명령어는 크게 Terminal / 소스코드 나누어 설명합니다.
+- 명령어는 크게 Terminal / 소스코드로 나누어 설명합니다.
 1. Terminal
-   - 양식: `# terraform 명령어`
+   - 기본 양식: `# terraform 명령어`
    - init: Terraform 사용하기 위한 초기 설정, provider/module 다운 등
    - plan: 작성한 소스코드 변경사항 체크 (추가/삭제/수정)
    - apply: 작성한 소스코드 인프라로 반영 <br>
    apply 실행하면 plan 결과값을 보여주고 사용자 입력 받음 yes/no <br>
-   (`-auto-approve` 옵션 `'yes'` 입력없이 배포) <br>
+   (`-auto-approve` 옵션: `'yes'` 입력없이 배포) <br>
    - destroy: 생성된 모든 인프라 삭제
    - state list: 생성된 인프라 리스트 출력 (.tfstate 파일 기준)
    - fmt: HCL(Hash Corp Language)에서 제공하는 포맷으로 코드 스타일링
@@ -55,19 +55,26 @@ Terraform 설치 및 사용 가이드를 기술합니다.
    (현재 Terraform에서 완벽, 편리하게 제공되지 않음. 상세 내용은 7. 별첨에서 설명)
 
 2. 소스코드
-   - provider: CSP에서 제공하는 규격으로 설정 (AWS/AZURE/GCP)
-   - data: Terminal에서 import한 리소스를 정의할 때 사용
+   - provider: CSP에서 제공하는 규격으로 설정 (AWS/AZURE/GCP 등)
+   - data: Provider에서 제공하는 리소스를 커스터마이징/사용자정의 하여 사용 <br>
+   ex) aws ami를 최신버전으로 가져오도록 작성 가능
    - variable: 변수 선언
    - resource: 리소스 생성
 
 ## 5. 샘플코드
-- [소스코드 경로](https://github.com/chjr68/Terraform/tree/main/source)
+- [샘플코드 경로](https://github.com/chjr68/Terraform/tree/master/source)
+- [Terraform Docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) <br>
+모든 옵션을 정의할 수 없으므로, 필요한 옵션은 Docs에서 찾아서 코딩
+
+## 6. Trouble Shooting
+- (발생 시, 업데이트)
+- 리소스 생성할 때 CSP에서 변경 가능한 값은 Terraform 통해서 배포 시, 수정되어 적용 됨. <br>
+반대로 변경 불가한 값은 자동으로 삭제 후 배포 되므로 유의
 
 ## 7. 별첨
-
 - 비용관리 <br>
 비용이 발생되는 서비스와 발생되지 않는 서비스를 다른 파일로 구분하면 관리가 쉬움
-  1. 퇴근 전 리소스를 삭제할 때, 비용발생되는 소스코드를 주석처리(드래그 > Ctrl + /)
+  1. 퇴근 전 리소스를 삭제할 때, 비용 발생되는 소스코드를 주석처리(드래그 > `Ctrl + /`)
   2. `# terraform apply -auto-approve` <br>
   destroy가 아닌 apply로 특정 리소스만 삭제할 수 있음
    &nbsp; <br><br>
